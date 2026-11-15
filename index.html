@@ -1,74 +1,147 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>AR - Control de Activos</title>
+
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+
   <style>
+
     body { margin: 0; overflow: hidden; }
+
   </style>
+
 </head>
+
 <body>
 
+
+
   <a-scene 
+
     mindar-image="imageTargetSrc: ./doctorsv.mind;" 
+
     color-space="sRGB" 
+
     renderer="colorManagement: true, physicallyCorrectLights" 
+
     vr-mode-ui="enabled: false" 
+
     device-orientation-permission-ui="enabled: false">
+
     
+
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
+
+
     <!-- Detección del sticker -->
+
     <a-entity mindar-image-target="targetIndex: 0">
+
       
+
       <!-- Tarjeta visual flotante -->
+
       <a-plane color="#0F172A" height="0.85" width="1.15" position="0 0 0">
+
         
+
         <a-text value="FICHA DEL EQUIPO" color="#38BDF8" align="center" width="1.3" position="0 0.33 0.01"></a-text>
+
         <a-plane color="#38BDF8" height="0.008" width="0.95" position="0 0.27 0.01"></a-plane>
 
+
+
         <!-- Aquí se imprimen los datos de Google Sheets -->
+
         <a-text 
+
           id="info-texto" 
+
           value="Cargando datos..." 
+
           color="#FFFFFF" 
+
           align="left" 
+
           width="1.2" 
+
           position="-0.5 0.02 0.01">
+
         </a-text>
+
+
 
       </a-plane>
 
+
+
     </a-entity>
+
   </a-scene>
 
-<script>
+
+
+  <script>
+
     const URL_API = "https://api.sheetbest.com/sheets/e781a3d9-e264-4653-8744-13aaf4f3a9a0";
 
-    async function obtenerDatos() {
-      const textoElemento = document.querySelector('#info-texto');
-      try {
-        const respuesta = await fetch(URL_API);
-        const filas = await respuesta.json();
-        const equipo = filas[0];
 
-        // Busca el campo sin importar si lleva tilde o espacios extra
-        const areaValor = equipo["ÁREA"] || equipo["AREA"] || equipo["ÁREA "] || equipo["AREA "] || equipo["Área"] || "Sin dato";
+
+    async function obtenerDatos() {
+
+      const textoElemento = document.querySelector('#info-texto');
+
+      try {
+
+        const respuesta = await fetch(URL_API);
+
+        const filas = await respuesta.json();
+
+        const equipo = filas[0]; // Lee la primera fila de datos (Fila 2 en Google Sheets)
+
+
 
         textoElemento.setAttribute("value", 
+
           `Activo Fijo: ${equipo["ACTIVO FIJO"]}\n` +
+
           `Equipo: ${equipo["EQUIPO"]}\n` +
+
           `Modelo: ${equipo["MODELO"]}\n` +
-          `Area: ${areaValor}\n` +
+
+          `Area: ${equipo["AREA"]}\n` +
+
           `Estado: ${equipo["ESTADO"]}`
+
         );
+
       } catch (error) {
+
         textoElemento.setAttribute("value", "Error al leer Google Sheets.");
+
       }
+
     }
 
+
+
     obtenerDatos();
+
   </script>
+
+
+
+</body>
+
+</html> 
