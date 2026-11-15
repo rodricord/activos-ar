@@ -30,7 +30,7 @@
         <a-text value="FICHA DEL EQUIPO" color="#38BDF8" align="center" width="1.3" position="0 0.33 0.01"></a-text>
         <a-plane color="#38BDF8" height="0.008" width="0.95" position="0 0.27 0.01"></a-plane>
 
-        <!-- Aquí se imprimen los datos de Google Sheets -->
+        <!-- Aquí se imprimen los datos filtrados por el QR -->
         <a-text 
           id="info-texto" 
           value="Cargando datos..." 
@@ -46,16 +46,30 @@
   </a-scene>
 
   <script>
+    // Si usas tu URL de Google Apps Script (/exec), cámbiala aquí:
     const URL_API = "https://api.sheetbest.com/sheets/e781a3d9-e264-4653-8744-13aaf4f3a9a0";
 
     async function obtenerDatos() {
       const textoElemento = document.querySelector('#info-texto');
       try {
+        // 1. Captura el código ?id= que viene dentro del QR escaneado
+        const parametros = new URLSearchParams(window.location.search);
+        const idBuscado = parametros.get('id');
+
         const respuesta = await fetch(URL_API);
         const filas = await respuesta.json();
-        const equipo = filas[0]; // Lee la primera fila de datos (Fila 2 en Google Sheets)
 
-        const areaValor = equipo["ÁREA"] || equipo["AREA"] || equipo["ÁREA "] || equipo["AREA "] || equipo["Área"] || "Sin dato";
+        // 2. Busca la fila exacta cuyo ACTIVO FIJO coincida con el QR
+        const equipo = idBuscado 
+          ? filas.find(fila => fila["ACTIVO FIJO"] && fila["ACTIVO FIJO"].toString().trim() === idBuscado.trim()) 
+          : filas[0];
+
+        if (!equipo) {
+          textoElemento.setAttribute("value", `Activo ${idBuscado} no encontrado en Sheets.`);
+          return;
+        }
+
+        const areaValor = equipo["ÁREA"] || equipo["AREA"] || equipo["Área"] || "Sin dato";
 
         textoElemento.setAttribute("value", 
           `Activo Fijo: ${equipo["ACTIVO FIJO"]}\n` +
