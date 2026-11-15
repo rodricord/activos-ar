@@ -27,7 +27,7 @@
       <!-- Tarjeta visual flotante -->
       <a-plane color="#0F172A" height="0.85" width="1.15" position="0 0 0">
         
-        <a-text value="FICHA DEL EQUIPO" color="#38BDF8" align="center" width="1.7" position="0 0.33 0.01"></a-text>
+        <a-text value="FICHA DEL EQUIPO" color="#38BDF8" align="center" width="1.3" position="0 0.33 0.01"></a-text>
         <a-plane color="#38BDF8" height="0.008" width="0.95" position="0 0.27 0.01"></a-plane>
 
         <!-- Aquí se imprimen los datos de Google Sheets -->
@@ -36,7 +36,7 @@
           value="Cargando datos..." 
           color="#FFFFFF" 
           align="left" 
-          width="1.3" 
+          width="1.2" 
           position="-0.5 0.02 0.01">
         </a-text>
 
@@ -46,7 +46,6 @@
   </a-scene>
 
   <script>
-    // PEGA AQUÍ LA URL QUE TE DIO SHEET.BEST O STEIN EN EL PASO 1
     const URL_API = "https://api.sheetbest.com/sheets/e781a3d9-e264-4653-8744-13aaf4f3a9a0";
 
     async function obtenerDatos() {
@@ -54,14 +53,14 @@
       try {
         const respuesta = await fetch(URL_API);
         const filas = await respuesta.json();
-        const equipo = filas[0]; // Lee la primera fila de datos
+        const equipo = filas[0]; // Lee la primera fila de datos (Fila 2 en Google Sheets)
 
         textoElemento.setAttribute("value", 
-          `Producto: ${equipo.Producto}\n` +
-          `Modelo: ${equipo.Modelo}\n` +
-          `Activo Fijo: ${equipo.ActivoFijo}\n` +
-          `Area: ${equipo.Area}\n` +
-          `Estado: ${equipo.Estado}`
+          `Activo Fijo: ${equipo["ACTIVO FIJO"]}\n` +
+          `Equipo: ${equipo["EQUIPO"]}\n` +
+          `Modelo: ${equipo["MODELO"]}\n` +
+          `Area: ${equipo["ÁREA"]}\n` +
+          `Estado: ${equipo["ESTADO"]}`
         );
       } catch (error) {
         textoElemento.setAttribute("value", "Error al leer Google Sheets.");
