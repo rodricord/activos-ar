@@ -45,7 +45,7 @@
     </a-entity>
   </a-scene>
 
-  <script>
+<script>
     const URL_API = "https://api.sheetbest.com/sheets/e781a3d9-e264-4653-8744-13aaf4f3a9a0";
 
     async function obtenerDatos() {
@@ -53,13 +53,16 @@
       try {
         const respuesta = await fetch(URL_API);
         const filas = await respuesta.json();
-        const equipo = filas[0]; // Lee la primera fila de datos (Fila 2 en Google Sheets)
+        const equipo = filas[0];
+
+        // Busca el campo sin importar si lleva tilde o espacios extra
+        const areaValor = equipo["ÁREA"] || equipo["AREA"] || equipo["ÁREA "] || equipo["AREA "] || equipo["Área"] || "Sin dato";
 
         textoElemento.setAttribute("value", 
           `Activo Fijo: ${equipo["ACTIVO FIJO"]}\n` +
           `Equipo: ${equipo["EQUIPO"]}\n` +
           `Modelo: ${equipo["MODELO"]}\n` +
-          `Area: ${equipo["AREA"]}\n` +
+          `Area: ${areaValor}\n` +
           `Estado: ${equipo["ESTADO"]}`
         );
       } catch (error) {
@@ -69,6 +72,3 @@
 
     obtenerDatos();
   </script>
-
-</body>
-</html>
