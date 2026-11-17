@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>AR - Control de Activos</title>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
@@ -13,7 +13,7 @@
 <body>
 
   <a-scene 
-    mindar-image="imageTargetSrc: ./doctorsv.mind; filterMinCF: 0.0001; filterBeta: 0.001;" 
+    mindar-image="imageTargetSrc: ./doctorsv.mind; filterMinCF: 0.00001; filterBeta: 0.0001; missTolerance: 15; warmupTolerance: 3;" 
     color-space="sRGB" 
     renderer="colorManagement: true, physicallyCorrectLights" 
     vr-mode-ui="enabled: false" 
@@ -24,8 +24,8 @@
     <!-- Detección del sticker -->
     <a-entity mindar-image-target="targetIndex: 0">
       
-      <!-- Contenedor que levanta la ficha 90 grados para que quede vertical sobre el equipo -->
-      <a-entity rotation="90 0 0" position="0 0 0.45">
+      <!-- Contenedor inclinado 65° para verse de frente cuando sostienes el teléfono vertical -->
+      <a-entity rotation="65 0 0" position="0 0.05 0.42">
 
         <!-- Tarjeta visual flotante con movimiento oscilante tipo ventilador -->
         <a-plane 
