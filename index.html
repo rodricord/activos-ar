@@ -24,40 +24,45 @@
     <!-- Detección del sticker -->
     <a-entity mindar-image-target="targetIndex: 0">
       
-      <!-- Tarjeta visual flotante con movimiento oscilante tipo ventilador -->
-      <a-plane 
-        color="#0F172A" 
-        height="1.35" 
-        width="1.15" 
-        position="0 0 0" 
-        scale="0.65 0.65 0.65"
-        animation="property: rotation; from: 0 -25 0; to: 0 25 0; dur: 2500; dir: alternate; loop: true; easing: easeInOutSine">
-        
-        <a-text value="FICHA DEL EQUIPO" color="#38BDF8" align="center" width="1.3" position="0 0.57 0.01"></a-text>
-        <a-plane color="#38BDF8" height="0.008" width="0.95" position="0 0.50 0.01"></a-plane>
+      <!-- Contenedor que levanta la ficha 90 grados para que quede vertical sobre el equipo -->
+      <a-entity rotation="90 0 0" position="0 0 0.45">
 
-        <!-- Datos de texto del equipo -->
-        <a-text 
-          id="info-texto" 
-          value="Cargando datos..." 
-          color="#FFFFFF" 
-          align="left" 
-          width="1.2" 
-          position="-0.5 0.25 0.01">
-        </a-text>
+        <!-- Tarjeta visual flotante con movimiento oscilante tipo ventilador -->
+        <a-plane 
+          color="#0F172A" 
+          height="1.35" 
+          width="1.15" 
+          position="0 0 0" 
+          scale="0.65 0.65 0.65"
+          animation="property: rotation; from: 0 -25 0; to: 0 25 0; dur: 2500; dir: alternate; loop: true; easing: easeInOutSine">
+          
+          <a-text value="FICHA DEL EQUIPO" color="#38BDF8" align="center" width="1.3" position="0 0.57 0.01"></a-text>
+          <a-plane color="#38BDF8" height="0.008" width="0.95" position="0 0.50 0.01"></a-plane>
 
-        <!-- Imagen del equipo debajo del último campo -->
-        <a-image 
-          id="info-imagen" 
-          src="" 
-          crossorigin="anonymous"
-          width="0.65" 
-          height="0.45" 
-          position="0 -0.32 0.02" 
-          visible="false">
-        </a-image>
+          <!-- Datos de texto del equipo -->
+          <a-text 
+            id="info-texto" 
+            value="Cargando datos..." 
+            color="#FFFFFF" 
+            align="left" 
+            width="1.2" 
+            position="-0.5 0.25 0.01">
+          </a-text>
 
-      </a-plane>
+          <!-- Imagen del equipo debajo del último campo -->
+          <a-image 
+            id="info-imagen" 
+            src="" 
+            crossorigin="anonymous"
+            width="0.65" 
+            height="0.45" 
+            position="0 -0.32 0.02" 
+            visible="false">
+          </a-image>
+
+        </a-plane>
+
+      </a-entity>
 
     </a-entity>
   </a-scene>
@@ -115,4 +120,3 @@
 
 </body>
 </html>
-
